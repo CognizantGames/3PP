@@ -9,6 +9,7 @@
 package ca.cognizantgames.screens;
 
 
+import ca.cognizantgames.server.GameClient;
 import ca.cognizantgames.server.Server;
 import ca.cognizantgames.utilities.Button;
 import com.badlogic.gdx.Game;

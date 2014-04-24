@@ -11,10 +11,15 @@ import java.awt.*;
 public class Main {
     public static final String GAME_NAME = "";
 
+    public static String name;
+
     public static void main(String[] args){
         Frame frame = new Frame();
         Logger logger = new Logger("log.txt");
 
+        name = JOptionPane.showInputDialog("Please Enter Your Name!");
+
+        System.out.println("Name: "+name);
         for (String arg : args) {
             if (arg.equals("-s")) {
                 //start server

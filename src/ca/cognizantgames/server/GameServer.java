@@ -22,6 +22,13 @@ public class GameServer {
 
     Server server;
 
+    Response response;
+
+    String[] names;
+    long[] ids;
+
+    public static final int MAX_CONNECTIONS = 3;
+
     public GameServer(int port, String ip){
         this.port = port;
         this.ip = ip;
@@ -32,7 +39,11 @@ public class GameServer {
 
         Frame frame = new Frame();
 
+        names = new String[MAX_CONNECTIONS];
+        ids = new long[MAX_CONNECTIONS];
+
         server.start();
+
         try {
             server.bind(port);
         }catch(Exception e){
@@ -48,12 +59,23 @@ public class GameServer {
             public void received (Connection connection, Object object) {
                 //responses go here from server!
                 if (object instanceof Request) {
-                    Request request = (Request)object;
-                    System.out.println(request.text);
+                    Request request = (Request) object;
+                    if(request.text.equals("Connect")) {
+                        //Assign each client an id, get a name for that id then return the other names to the clients
+                        System.out.println(connection.getID());
 
-                    Response response = new Response();
-                    response.text = "Hello Client";
-                    connection.sendTCP(response);
+                        response = new Response();
+                        response.id = connection.getID();
+                        response.text = "ID";
+                        connection.sendTCP(response);
+                    }
+                }
+                Connection[] connections;
+                connections = server.getConnections();
+                for(int i = 0; i < server.getConnections().length; i++){
+                    if(!connections[i].isConnected()){
+                        connections[i].close();
+                    }
                 }
             }
         });
